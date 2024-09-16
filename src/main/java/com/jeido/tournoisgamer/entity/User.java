@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -62,6 +63,13 @@ public class User {
 
     public int getDefeat() {
         return 0;
+    }
+
+    public Object getUsername() {
+        return null;
+    }
+
+    public void setAvatar(String originalFilename) {
     }
 }
 

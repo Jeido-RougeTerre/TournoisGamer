@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${user != null}" th:text="${user.username} + ' Profile'"></title>
+</head>
+<body>
+<span th:replace="~{home :: navbar}"></span>
+<main>
+  <div class="avatar">
+    <img th:src="@{/images/{filename}(filename=${user.getImgPath()})}" th:alt="'Avatar of ' + ${user.username}"><h1 th:text="${user.username}"></h1><p><span th:text="${user.getWin()}"></span>/<span th:text="${user.getDefeat()}"></span>(<span th:text="${user.getRatio()}"></span>)</p>
+  </div>
+  <div class="container">
+    <h2>Participated in Tournaments :</h2>
+    <p th:if="${user.getAttendedTournaments().isEmpty()}">None Yet</p>
+    <div class="card" th:each="r : ${user.attendedTournaments}">
+      <h3><span th:text="${r.getTournament().name}"></span> <span th:text="${r.getTournament().getStatus()}"></span> </h3>
+      <p th:text="${r.getTournament().getFormat()}"></p>
+      <p>Place: <span th:text="${r.getPlace()}"></span> <span th:text="${r.getNbWin()}"></span>/<span th:text="${r.getNbDefeat()}"></span>(<span th:text="${r.getRatio()}"></span>)</p>
+    </div>
+  </div>
+</main>
+<span th:replace="~{home :: footer}"></span>
+</body>
+</html>

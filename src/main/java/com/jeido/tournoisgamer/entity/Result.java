@@ -30,4 +30,8 @@ public class Result {
     @ManyToOne
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
+
+    public double getRatio() {
+        return (nbDefeat == 0)? nbWin : (double) nbWin / nbDefeat;
+    }
 }

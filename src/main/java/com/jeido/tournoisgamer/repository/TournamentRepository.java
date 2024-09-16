@@ -16,5 +16,6 @@ public interface TournamentRepository extends JpaRepository<Tournament, UUID> {
     List<Tournament> findByDate(@NotBlank(message = "Le champ ne doit pas être vide !") Date date);
     List<Tournament> findByDateBefore(Date date);
     List<Tournament> findByDateAfter(Date date);
+    List<Tournament> findByDateAndName(Date date, String name);
 
 }
