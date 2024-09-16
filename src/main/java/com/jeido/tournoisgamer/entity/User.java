@@ -1,12 +1,12 @@
 package com.jeido.tournoisgamer.entity;
 
+import com.jeido.tournoisgamer.utils.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.aspectj.bridge.Message;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
     @NotBlank(message = "Le champ ne doit pas être vide !")
     @Column(name = "name")
@@ -37,6 +38,8 @@ public class User {
     private List<Tournament> subscribesTournament;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Result> attendedTournaments;
+    @Column(name = "roles")
+    private Role role;
 
 
     public double getRatio() {
@@ -47,12 +50,12 @@ public class User {
 
 
     public int getWin() {
-
+        return 0;
     }
 
 
     public int getDefeat() {
-
+        return 0;
     }
 }
 
