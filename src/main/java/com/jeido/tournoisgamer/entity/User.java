@@ -16,22 +16,24 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
+    // --- ID ---
     @Id
     @GeneratedValue
     @Column(name = "user_id")
     private Long id;
+
+    // --- VARIABLES ---
     @NotBlank(message = "Le champ ne doit pas être vide !")
-    @Column(name = "name")
     private String name;
     @NotBlank(message = "Le champ ne doit pas être vide !")
-    @Column(name = "passworde")
     private String password;
     @Column(name = "image")
     private String imgPath;
     @NotBlank(message = "Le champ ne doit pas être vide !")
     @Pattern(regexp = "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$", message = "Format de l'email invalide !")
-    @Column(name = "email")
     private String email;
+
+    // --- LISTS ---
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messages;
     @ManyToMany
