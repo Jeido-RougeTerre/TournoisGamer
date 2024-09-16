@@ -41,12 +41,12 @@ public class Tournament {
     private TournamentStatus status;
 
     // --- LISTS ---
-    @ManyToMany
-    @JoinColumn(name="user_id")
+    @ManyToMany(mappedBy = "subscribedTournament")
     private List<User> inCompetitionPlayers;
 
     @OneToMany(mappedBy = "tournament")
     private List<Match> results;
-//
-//    private List<User> players;
+
+    @ManyToMany(mappedBy = "subscribedTournament")
+    private List<User> players;
 }

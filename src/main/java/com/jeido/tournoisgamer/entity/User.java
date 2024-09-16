@@ -35,7 +35,10 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Message> messages;
     @ManyToMany
-    private List<Tournament> subscribesTournament;
+    @JoinTable(name = "player_tournament",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "tournament_id"))
+    private List<Tournament> subscribedTournament;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Result> attendedTournaments;
     @Column(name = "roles")
