@@ -9,19 +9,17 @@
 <span th:replace="~{home :: navbar}"></span>
 <main>
     <div class="container">
-        <table>
-            <tr th:each="u : ${users}">
-                <td>
+            <a th:each="u : ${users}" th:href="@{/user/{id}(id=${u.getId()})}">
+                <div>
                     <img th:src="@{/image/avatar/{filename}(filename=${u.getImgPath() == null} ? 'no-icon.png' : ${u.getImgPath()})}" th:alt="'Avatar of ' + ${u.name}">
-                </td>
-                <td>
+                </div>
+                <div>
                     <h1 th:text="${u.name}"></h1>
-                </td>
-                <td>
+                </div>
+                <div>
                     <p><span th:text="${u.getWin()}"></span>/<span th:text="${u.getDefeat()}"></span>(<span th:text="${u.getRatio()}"></span>)</p>
-                </td>
-            </tr>
-        </table>
+                </div>
+            </a>
         <p th:if="${users.isEmpty()}">No Users Yet</p>
     </div>
 </main>
