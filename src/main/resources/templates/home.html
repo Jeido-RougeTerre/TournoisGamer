@@ -24,21 +24,15 @@
             <a  class="nav-link" th:href="@{/}">HOME</a>
           </li>
           <li class="nav-item">
-            <a  class="nav-link" th:href="@{/tounament}">TOURNAMENTS</a>
+            <a  class="nav-link" th:href="@{/tournaments}">TOURNAMENTS</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" th:href="@{/user}">USER-LIST</a>
           </li>
-          <li class="nav-item">
-            <a  class="nav-link" th:href="@{/calendar}">CALENDAR</a>
-          </li>
-          <li class="nav-item">
-            <a  class="nav-link" th:href="@{/news}">NEWS</a>
-          </li>
-          <li class="nav-item">
+          <li  th:if="${session.getOrDefault('isLoggedIn', false)}" class="nav-item">
             <a  class="nav-link" th:href="@{/messages}">MESSAGES</a>
           </li>
-          <li class="nav-item">
+          <li th:if="${session.getOrDefault('isLoggedIn', false)}" class="nav-item">
             <a  class="nav-link" th:href="@{/account}">MY ACCOUNT</a>
           </li>
 

@@ -4,10 +4,12 @@ import com.jeido.tournoisgamer.utils.Format;
 import com.jeido.tournoisgamer.utils.TournamentStatus;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -17,6 +19,7 @@ import java.util.UUID;
 @Table(name="tournaments")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Tournament {
     // --- ID ---
     @Id
@@ -28,7 +31,7 @@ public class Tournament {
     @NotBlank(message = "This field can't be empty !")
     private String name;
     @NotBlank(message = "This field can't be empty !")
-    private Date date;
+    private LocalDateTime date;
     @NotBlank(message = "This field can't be empty !")
     private String game;
     @NotBlank(message = "This field can't be empty !")

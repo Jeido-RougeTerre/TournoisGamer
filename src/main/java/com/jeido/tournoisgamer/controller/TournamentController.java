@@ -5,6 +5,8 @@ import com.jeido.tournoisgamer.entity.User;
 import com.jeido.tournoisgamer.service.AuthService;
 import com.jeido.tournoisgamer.service.TournamentService;
 import com.jeido.tournoisgamer.service.UserService;
+import com.jeido.tournoisgamer.utils.Format;
+import com.jeido.tournoisgamer.utils.Role;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,9 +59,28 @@ public class TournamentController {
         return "tournaments/detailTournaments";
     }
 
+    @GetMapping("/tournaments/add")
+    public String addTournament(Model model) {
+        model.addAttribute("tournament", Tournament.builder().game("none").format(Format.TOURNAMENT).date(LocalDateTime.now()).playerLimit(0).build());
+        model.addAttribute("options", Format.values());
+        return "tournaments/addTournament";
+    }
+
+
+
+
     @PostMapping("/tournaments/add")
-    public String addTournament(@Valid @ModelAttribute("tournament") Tournament tournament, BindingResult bindingResult, Model model) {
-        return " ";
+    public String addPostTournament(@Valid @ModelAttribute("tournament") Tournament tournament, BindingResult bindingResult, Model model) {
+        if(!isAdmin()) return "redirect:/tournaments";
+
+        return "/tournaments/addTournament";
+    }
+
+    @PostMapping("/tournaments/update")
+    public String updateTournament(@Valid @ModelAttribute ("tournament")Tournament tournament, BindingResult bindingResult, Model model) {
+        if(!isAdmin()) return "redirect:/tournaments";
+
+        return "/tournaments/addTournament";
     }
 
     @PostMapping("/tournaments/subscription/{id}")
@@ -83,7 +105,7 @@ public class TournamentController {
                 model.addAttribute("erreur", "Tournoi Plein");
                 return "redirect:/tournaments/" + id;
             }
-            
+
             switch (tournament.getStatus()) {
                 case TBA:
                     model.addAttribute("erreur", "Ce Tournoi n'est pas encore éligible aux inscriptions");
@@ -117,5 +139,15 @@ public class TournamentController {
         }
     }
 
-}
 
+    private boolean isAdmin() {
+
+        User user = authService.getUser();
+        if (user == null) {
+            return false;
+        }
+
+        return  user.getRole() == Role.ADMIN;
+
+    }
+}
