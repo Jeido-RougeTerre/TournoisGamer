@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AuthService {
     private final UserService userService;
@@ -21,7 +23,7 @@ public class AuthService {
         if (user == null) return false;
 
         if(user.getPassword().equals(password)){
-            httpSession.setAttribute("username", user.getUsername());
+            httpSession.setAttribute("id", user.getId());
             httpSession.setAttribute("isLoggedIn", true);
             return true;
         }
@@ -38,7 +40,7 @@ public class AuthService {
 
     public User getUser(){
         if (!isLogged()) return null;
-        return userService.findByUsername((String) httpSession.getAttribute("username"));
+        return userService.findById(UUID.fromString(httpSession.getAttribute("id").toString()));
     }
 
     public void logout(){

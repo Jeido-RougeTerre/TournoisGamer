@@ -38,13 +38,20 @@ public class UserController {
     }
 
     @RequestMapping("/account")
-    public String account(Model model){
+    public String account(){
         if(!authService.isLogged()) {
+            System.out.println("end3");
             return "redirect:/login";
         }
 
-        model.addAttribute("user", authService.getUser());
-        return "user/account";
+        User user = authService.getUser();
+
+        if (user == null) {
+            System.out.println("end2");
+            return "redirect:/login";
+        }
+        System.out.println("end1");
+        return "redirect:/user/" + user.getId();
     }
 
 

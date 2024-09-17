@@ -9,7 +9,7 @@
 <span th:replace="~{home :: navbar}"></span>
 <main>
   <div class="avatar">
-    <img th:src="@{/image/avatar/{filename}(filename=${user.getImgPath() == null} ? 'no-icon.png' : ${user.getImgPath()})}" th:alt="'Avatar of ' + ${user.name}"><h1 th:text="${user.name}"></h1><p><span th:text="${user.getWin()}"></span>/<span th:text="${user.getDefeat()}"></span>(<span th:text="${user.getRatio()}"></span>)</p>
+    <img th:src="@{/image/avatar/{filename}(filename=${user.imgPath == null} ? 'no-icon.png' : ${user.getImgPath()})}" th:alt="'Avatar of ' + ${user.name}"><h1 th:text="${user.name}"></h1><p><span th:text="${user.getWin()}"></span>/<span th:text="${user.getDefeat()}"></span>(<span th:text="${user.getRatio()}"></span>)</p>
   </div>
   <div class="container">
     <h2>Participated in Tournaments :</h2>
