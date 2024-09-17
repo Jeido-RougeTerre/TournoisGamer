@@ -3,6 +3,7 @@ package com.jeido.tournoisgamer.controller;
 import com.jeido.tournoisgamer.entity.User;
 import com.jeido.tournoisgamer.service.AuthService;
 import com.jeido.tournoisgamer.service.UserService;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +20,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 
 @Controller
+@MultipartConfig(maxFileSize = 1024 * 1024 * 10) // 10 MB MAX
 public class AuthController {
 
-    private static final String LOCATION = "src/main/resources/static/image";
+    private static final String location = "src/main/resources/static/image/avatar";
     private final UserService userService;
     private final AuthService authService;
 
@@ -35,10 +36,10 @@ public class AuthController {
 
     @RequestMapping("/registration")
     public String inscription(Model model) {
-        if(authService.isLogged()) {
+        if (authService.isLogged()) {
             return "redirect:/";
         }
-        model.addAttribute("user", new User());
+        model.addAttribute("user", User.builder().name("").email("").password("").build());
         model.addAttribute("mode", "registration");
         return "/login/form";
     }
@@ -46,37 +47,42 @@ public class AuthController {
     @PostMapping("/registration")
     public String inscriptionForm(@Valid @ModelAttribute("user") User user,
                                   BindingResult bindingResult,
-                                  @RequestParam("avatar") MultipartFile image) throws IOException {
+                                  @RequestParam("image") MultipartFile image, Model model) throws IOException {
+        System.out.println("IN");
         if (bindingResult.hasErrors()) {
+            model.addAttribute("mode", "registration");
+            System.out.println("ERROR");
             return "/login/form";
         } else {
-            Path destination = Paths.get(LOCATION).resolve(Objects.requireNonNull(image.getOriginalFilename())).toAbsolutePath();
-            user.setAvatar(image.getOriginalFilename());
+            Path destination = Paths.get(location).resolve(image.getOriginalFilename()).toAbsolutePath();
+            user.setImgPath(image.getOriginalFilename());
             InputStream inputStream = image.getInputStream();
             Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
-            authService.login(user.getName(), user.getPassword());
+            authService.login(user, user.getPassword());
             userService.save(user);
         }
+
         return "redirect:/";
     }
 
     @RequestMapping("/login")
     public String connexion(Model model) {
-        if(authService.isLogged()) {
+        if (authService.isLogged()) {
             return "redirect:/";
         }
-        model.addAttribute("user", new User());
+        model.addAttribute("user", User.builder().name("").email("").password("").build());
         model.addAttribute("mode", "login");
         return "/login/form";
     }
 
     @PostMapping("/login")
-    public String connexionForm(@ModelAttribute("username") String username, @ModelAttribute("password") String
-            password) {
-        boolean connected = authService.login(username, password);
+    public String connexionForm(@ModelAttribute("name") String username, @ModelAttribute("password") String
+            password, Model model) {
+        boolean connected = authService.login(userService.findByUsername(username), password);
         if (connected) {
             return "redirect:/";
         }
+        model.addAttribute("mode", "login");
         return "redirect:/login";
     }
 

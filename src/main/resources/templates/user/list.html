@@ -3,8 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>User List</title>
+    <link th:replace="~{home :: bootstrapImport}">
 </head>
 <body>
-$END$
+<span th:replace="~{home :: navbar}"></span>
+<main>
+    <div class="container">
+        <table>
+            <tr th:each="u : ${users}">
+                <td>
+                    <img th:src="@{/image/avatar/{filename}(filename=${u.getImgPath() == null} ? 'no-icon.png' : ${u.getImgPath()})}" th:alt="'Avatar of ' + ${u.name}">
+                </td>
+                <td>
+                    <h1 th:text="${u.name}"></h1>
+                </td>
+                <td>
+                    <p><span th:text="${u.getWin()}"></span>/<span th:text="${u.getDefeat()}"></span>(<span th:text="${u.getRatio()}"></span>)</p>
+                </td>
+            </tr>
+        </table>
+        <p th:if="${users.isEmpty()}">No Users Yet</p>
+    </div>
+</main>
+<span th:replace="~{home :: footer}"></span>
 </body>
 </html>

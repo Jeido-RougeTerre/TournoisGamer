@@ -1,7 +1,6 @@
 package com.jeido.tournoisgamer.service;
 
 import com.jeido.tournoisgamer.entity.User;
-import com.jeido.tournoisgamer.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,14 +16,13 @@ public class AuthService {
         this.userService = userService;
     }
 
-    public boolean login(String username, String password){
-        User user = userService.findByUsername(username);
+    public boolean login(User user, String password){
 
         if (user == null) return false;
 
         if(user.getPassword().equals(password)){
             httpSession.setAttribute("username", user.getUsername());
-            httpSession.setAttribute("login", "Ok");
+            httpSession.setAttribute("isLoggedIn", true);
             return true;
         }
         return false;
@@ -32,15 +30,15 @@ public class AuthService {
 
     public boolean isLogged(){
         try{
-            String isLogged = httpSession.getAttribute("login").toString();
-            return isLogged.equals("Ok");
+            return (boolean) httpSession.getAttribute("isLoggedIn");
         } catch (Exception ex){
             return false;
         }
     }
 
     public User getUser(){
-        return userService.findByUsername(httpSession.getAttribute("username").toString());
+        if (!isLogged()) return null;
+        return userService.findByUsername((String) httpSession.getAttribute("username"));
     }
 
     public void logout(){

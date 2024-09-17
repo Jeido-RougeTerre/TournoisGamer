@@ -1,5 +1,6 @@
 package com.jeido.tournoisgamer.controller;
 
+import com.jeido.tournoisgamer.entity.User;
 import com.jeido.tournoisgamer.service.AuthService;
 import com.jeido.tournoisgamer.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +24,6 @@ public class UserController {
 
     @RequestMapping("/user")
     public String home(Model model) {
-        if(authService.isLogged()) {
-            model.addAttribute("user", authService.getUser());
-        }
         
         model.addAttribute("users", userService.findAll());
         

@@ -11,10 +11,25 @@
 
 <!-- BODY -->
 
-<!-- FOOTER -->
-<th:block th:fragment="footer">
-    <div>
+<div class="container">
+    <h1>Tournament Details</h1>
+    <hr>
+    <div class="col justify-content-center" th:if="${tournament != null}">
+        <p>Name : <span th:text="${tournament.getName()}"></span></p>
+        <p>Date : <span th:text="${tournament.getDate()}"></span></p>
+        <p>Game : <span th:text="${tournament.getGame()}"></span></p>
+        <p>Player limit : <span th:text="${tournament.getPlayerLimit()}"></span></p>
+        <p>Rules : <span th:text="${tournament.getRules()}"></span></p>
+        <p>Format : <span th:text="${tournament.getFormat()}"></span></p>
+        <p>Status : <span th:text="${tournament.getStatus()}"></span></p>
     </div>
-</th:block>
+<!--    <hr>-->
+<!--    <a th:href="@{/delete(tournamentId=${tournament.getId()})}" class="btn btn-danger">Delete</a>-->
+<!--    <a th:href="@{/update(tournamentId=${tournament.getId()})}" class="btn btn-info">Update</a>-->
+</div>
+<div><a href="/templates/tournaments/listTournaments">Go back to list</a></div>
+
+<!-- FOOTER -->
+<span th:replace="~{home :: footer}"></span>
 </body>
 </html>

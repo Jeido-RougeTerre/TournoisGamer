@@ -1,7 +1,7 @@
 package com.jeido.tournoisgamer.utils;
 
 public enum TournamentStatus {
-    ONGOING,
+    STARTED,
     COMPLETED,
     NOT_STARTED,
     TBA,

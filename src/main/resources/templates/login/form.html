@@ -12,37 +12,34 @@
 <!-- need String Mode, need User user-->
 <main>
     <div class="container">
-        <h1 th:text="${mode.equals('log')} ? 'Log In :' : 'Register :'"></h1>
-        <form th:action="@{{act}(act=${mode.equals('log')}? '/login' : '/registration')}" method="post" th:object="${user}" enctype="multipart/form-data">
+        <h1 th:text="${mode.equals('login')} ? 'Log In :' : 'Register :'"></h1>
+        <form th:action="@{{act}(act=${mode.equals('login')}? '/login' : '/registration')}" method="post" th:object="${user}" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="username" hidden="hidden"></label>
-                <input class="form-control" id="username" type="text" placeholder="username" th:field="*{username}">
+                <input class="form-control" id="username" type="text" placeholder="username" th:field="*{name}">
             </div>
             <div class="mb-3">
                 <label for="password" hidden="hidden"></label>
                 <input class="form-control" id="password" type="text" placeholder="password" th:field="*{password}">
             </div>
-            <div class="mb-3">
+            <div th:if="${mode.equals('registration')}" class="mb-3">
                 <label for="email" hidden="hidden"></label>
                 <input class="form-control" id="email" type="text" placeholder="email" th:field="*{email}">
             </div>
-            <div class="mb-3">
-                <label for="avatar" hidden="hidden"></label>
-                <input class="form-control" id="avatar" type="file" placeholder="avatar" th:field="*{imgPath}">
+            <div th:if="${mode.equals('registration')}" class="mb-3">
+                <label for="image" hidden="hidden"></label>
+                <input class="form-control" id="image" name="image" type="file">
             </div>
             <div class="mb-3">
-                <button class="btn btn-primary" th:text="${mode.equals('log')} ? 'Log In' : 'Register'"></button>
+                <button class="btn btn-primary" th:text="${mode.equals('login')} ? 'Log In' : 'Register'"></button>
             </div>
         </form>
-        <a th:if="${mode.equals('log')}" class="btn btn-secondary" th:href="@{/registration}">Create Account</a>
-        <a th:unless="${mode.equals('log')}" class="btn btn-secondary" th:href="@{/login}">I Have an Account</a>
+        <a th:if="${mode.equals('login')}" class="btn btn-secondary" th:href="@{/registration}">Create Account</a>
+        <a th:unless="${mode.equals('login')}" class="btn btn-secondary" th:href="@{/login}">I Have an Account</a>
     </div>
 </main>
 
 <!-- FOOTER -->
-<th:block th:fragment="footer">
-    <div>
-    </div>
-</th:block>
+<span th:replace="~{home :: footer}"></span>
 </body>
 </html>

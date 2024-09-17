@@ -2,12 +2,16 @@ package com.jeido.tournoisgamer.entity;
 
 import com.jeido.tournoisgamer.utils.Role;
 import jakarta.persistence.*;
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,6 +19,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,14 +30,15 @@ public class User {
     private UUID id;
 
     // --- VARIABLES ---
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private String name;
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private String password;
     @Column(name = "image")
+
     private String imgPath;
-    @NotBlank(message = "Le champ ne doit pas être vide !")
-    @Pattern(regexp = "^[\\w\\.-]+@[a-zA-Z\\d\\.-]+\\.[a-zA-Z]{2,}$", message = "Format de l'email invalide !")
+    @NotBlank(message = "This field can't be empty !")
+    @Email
     private String email;
 
     // --- LISTS ---
@@ -67,9 +73,6 @@ public class User {
 
     public Object getUsername() {
         return null;
-    }
-
-    public void setAvatar(String originalFilename) {
     }
 }
 

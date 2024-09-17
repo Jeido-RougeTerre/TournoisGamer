@@ -25,15 +25,15 @@ public class Tournament {
     private UUID id;
 
     // --- VARIABLES ---
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private String name;
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private Date date;
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private String game;
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private int playerLimit;
-    @NotBlank(message = "Le champ ne doit pas être vide !")
+    @NotBlank(message = "This field can't be empty !")
     private String rules;
 
     // --- ENUM ---

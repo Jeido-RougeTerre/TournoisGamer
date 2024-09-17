@@ -48,4 +48,12 @@ public class TournamentService {
     public List<Tournament> findTournamentAfterDate(Date date) {
         return tournamentRepository.findByDateAfter(date);
     }
+
+    public Tournament create(Tournament tournament) {
+        return tournamentRepository.save(tournament);
+    }
+
+    public Tournament update(Tournament tournament) {
+        return tournamentRepository.save(tournament);
+    }
 }

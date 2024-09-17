@@ -10,11 +10,31 @@
 <span th:replace="~{home :: navbar}"></span>
 
 <!-- BODY -->
+<div class="container">
+    <h1>Tournaments list</h1>
+    <table class="tournaments" th:unless="${tournaments.isEmpty()}">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Date</th>
+            <th scope="col">Game</th>
+            <th scope="col">Status</th>
+        </tr>
+        </thead>
+        <tbody th:each="t : ${tournaments}">
+        <td th:text="${t.getId()}"></td>
+        <td th:text="${t.getName()}"></td>
+        <td th:text="${t.getDate()}"></td>
+        <td th:text="${t.getGame()}"></td>
+        <td th:text="${t.getStatus()}"></td>
+        <td><a th:href="@{/tournaments/{id}(id=${t.getId()})}" class="btn btn-outline-info">Get details</a></td>
+        </tbody>
+    </table>
+</div>
+
 
 <!-- FOOTER -->
-<th:block th:fragment="footer">
-    <div>
-    </div>
-</th:block>
+<span th:replace="~{home :: footer}"></span>
 </body>
 </html>
