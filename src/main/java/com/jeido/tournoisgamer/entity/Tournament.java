@@ -2,6 +2,8 @@ package com.jeido.tournoisgamer.entity;
 
 import com.jeido.tournoisgamer.utils.Format;
 import com.jeido.tournoisgamer.utils.TournamentStatus;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,6 +37,8 @@ public class Tournament {
     @NotBlank(message = "This field can't be empty !")
     private String game;
     @NotBlank(message = "This field can't be empty !")
+    @Min(2)
+    @Max(100)
     private int playerLimit;
     @NotBlank(message = "This field can't be empty !")
     private String rules;

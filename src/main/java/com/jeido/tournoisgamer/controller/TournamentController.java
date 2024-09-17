@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ public class TournamentController {
     }
 
     @GetMapping("/tournaments")
-    public String getAllTournaments(@RequestParam(value = "date", required = false) Date date, @RequestParam(value = "name", required = false) String name, Model model) {
+    public String getAllTournaments(@RequestParam(value = "date", required = false) LocalDateTime date, @RequestParam(value = "name", required = false) String name, Model model) {
         List<Tournament> tournaments;
         if (date != null && name != null) {
             tournaments = tournamentService.findTournamentsByDateAndByName(date, name);
@@ -66,13 +65,9 @@ public class TournamentController {
         return "tournaments/addTournament";
     }
 
-
-
-
     @PostMapping("/tournaments/add")
     public String addPostTournament(@Valid @ModelAttribute("tournament") Tournament tournament, BindingResult bindingResult, Model model) {
         if(!isAdmin()) return "redirect:/tournaments";
-
         return "/tournaments/addTournament";
     }
 

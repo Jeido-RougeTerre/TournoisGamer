@@ -48,19 +48,20 @@ public class AuthController {
     public String inscriptionForm(@Valid @ModelAttribute("user") User user,
                                   BindingResult bindingResult,
                                   @RequestParam("image") MultipartFile image, Model model) throws IOException {
-        System.out.println("IN");
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("mode", "registration");
-            System.out.println("ERROR");
-            return "/login/form";
-        } else {
-            Path destination = Paths.get(location).resolve(image.getOriginalFilename()).toAbsolutePath();
-            user.setImgPath(image.getOriginalFilename());
-            InputStream inputStream = image.getInputStream();
-            Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
-            authService.login(user, user.getPassword());
-            userService.save(user);
-        }
+//        System.out.println("IN");
+//        if (bindingResult.hasErrors()) {
+//            model.addAttribute("mode", "registration");
+//            System.out.println("ERROR");
+//            return "/login/form";
+//        } else {
+//        }
+
+        Path destination = Paths.get(location).resolve(image.getOriginalFilename()).toAbsolutePath();
+        user.setImgPath(image.getOriginalFilename());
+        InputStream inputStream = image.getInputStream();
+        Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+        authService.login(user, user.getPassword());
+        userService.save(user);
 
         return "redirect:/";
     }

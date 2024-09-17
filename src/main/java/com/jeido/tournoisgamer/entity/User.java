@@ -31,13 +31,14 @@ public class User {
 
     // --- VARIABLES ---
     @NotBlank(message = "This field can't be empty !")
+    @Size(min=3, max=15)
     private String name;
     @NotBlank(message = "This field can't be empty !")
+    @Size(min=8)
     private String password;
     @Column(name = "image")
-
-    private String imgPath;
     @NotBlank(message = "This field can't be empty !")
+    private String imgPath;
     @Email
     private String email;
 

@@ -13,9 +13,9 @@ import java.util.UUID;
 public interface TournamentRepository extends JpaRepository<Tournament, UUID> {
     List<Tournament> findByName(String name);
     List<Tournament> findByStatus(TournamentStatus status);
-    List<Tournament> findByDate(@NotBlank(message = "Le champ ne doit pas être vide !") Date date);
-    List<Tournament> findByDateBefore(Date date);
-    List<Tournament> findByDateAfter(Date date);
-    List<Tournament> findByDateAndName(Date date, String name);
+    List<Tournament> findByDate(@NotBlank(message = "Le champ ne doit pas être vide !") LocalDateTime date);
+    List<Tournament> findByDateBefore(LocalDateTime date);
+    List<Tournament> findByDateAfter(LocalDateTime date);
+    List<Tournament> findByDateAndName(LocalDateTime date, String name);
 
 }

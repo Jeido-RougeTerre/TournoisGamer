@@ -5,6 +5,7 @@ import com.jeido.tournoisgamer.repository.TournamentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Date;
 import java.util.Optional;
@@ -29,11 +30,11 @@ public class TournamentService {
         return tournamentRepository.findByName(String.valueOf(status));
     }
 
-    public List<Tournament> findTournamentsByDate(Date date) {
+    public List<Tournament> findTournamentsByDate(LocalDateTime date) {
         return tournamentRepository.findByDate(date);
     }
 
-    public List<Tournament> findTournamentsByDateAndByName(Date date, String name) {
+    public List<Tournament> findTournamentsByDateAndByName(LocalDateTime date, String name) {
         return tournamentRepository.findByDateAndName(date, name);
     }
 
@@ -41,11 +42,11 @@ public class TournamentService {
         return tournamentRepository.findById(id);
     }
 
-    public List<Tournament> findTournamentBeforeDate(Date date) {
+    public List<Tournament> findTournamentBeforeDate(LocalDateTime date) {
         return tournamentRepository.findByDateBefore(date);
     }
 
-    public List<Tournament> findTournamentAfterDate(Date date) {
+    public List<Tournament> findTournamentAfterDate(LocalDateTime date) {
         return tournamentRepository.findByDateAfter(date);
     }
 

@@ -11,16 +11,12 @@
 
 <!-- BODY -->
 <div class="container">
-    <h1>Add tournament</h1>
-</div>
-
-<div class="container">
     <h1 th:text="${tournament.getId() != null ? 'Update Tournament' : 'Add tournament'}"></h1>
     <form th:action="@{/tournaments/add}" method="post" th:object="${tournament}">
         <input th:field="*{id}" type="hidden">
         <div class="mb-3">
             <label for="name">Name :</label>
-            <input type="text" class="form-control" id="name" th:field="*{name}">
+            <input type="text" class="form-control" id="name" placeholder="Tournament name" th:field="*{name}">
             <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
         </div>
         <div class="mb-3">
@@ -30,17 +26,17 @@
         </div>
         <div class="mb-3">
             <label for="game">Game :</label>
-            <input type="text" class="form-control" id="game" th:field="*{game}" >
+            <input type="text" class="form-control" id="game" placeholder="Game name" th:field="*{game}" >
             <span th:if="${#fields.hasErrors('game')}" th:errors="*{game}"></span>
         </div>
         <div class="mb-3">
             <label for="playerLimit">Player limit :</label>
-            <input type="number" class="form-control" id="playerLimit" th:field="*{playerLimit}">
+            <input type="number" class="form-control" id="playerLimit" placeholder="2" th:field="*{playerLimit}">
             <span th:if="${#fields.hasErrors('playerLimit')}" th:errors="*{playerLimit}"></span>
         </div>
         <div class="mb-3">
             <label for="rules">Rules :</label>
-            <input type="text" class="form-control" id="rules" th:field="*{rules}">
+            <input type="text" class="form-control" id="rules" placeholder="Rules" th:field="*{rules}">
             <span th:if="${#fields.hasErrors('rules')}" th:errors="*{rules}"></span>
         </div>
         <div class="mb-3">
