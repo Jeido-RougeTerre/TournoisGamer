@@ -31,7 +31,7 @@
         </div>
         <div class="mb-3">
             <label for="playerLimit">Player limit :</label>
-            <input type="number" class="form-control" id="playerLimit" placeholder="2" th:field="*{playerLimit}">
+            <input type="number" class="form-control" id="playerLimit" th:field="*{playerLimit}">
             <span th:if="${#fields.hasErrors('playerLimit')}" th:errors="*{playerLimit}"></span>
         </div>
         <div class="mb-3">

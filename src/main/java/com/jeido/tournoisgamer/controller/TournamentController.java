@@ -64,16 +64,18 @@ public class TournamentController {
     @GetMapping("/tournaments/{id}")
     public String getTournamentDetails(@PathVariable("id") UUID id, Model model) {
         Tournament tournament = tournamentService.findTournamentById(id).orElse(null);
-        //error 400
+        //TODO error(custom) not found
         model.addAttribute("tournament", tournament);
         return "tournaments/detailTournaments";
     }
 
     @GetMapping("/tournaments/add")
     public String addTournament(Model model) {
-        model.addAttribute("tournament", Tournament.builder().game("none").format(Format.TOURNAMENT).date(LocalDateTime.now()).playerLimit(2).build());
-        model.addAttribute("options", Format.values());
-        return "tournaments/addTournament";
+        if(userService.isAdmin(authService.getUser().getId())) {
+            model.addAttribute("tournament", Tournament.builder().game("none").format(Format.TOURNAMENT).date(LocalDateTime.now()).playerLimit(2).build());
+            model.addAttribute("options", Format.values());
+            return "tournaments/addTournament";
+        } return "redirect:/tournaments";
     }
 
     @PostMapping("/tournaments/add")
@@ -82,12 +84,16 @@ public class TournamentController {
         if(!userService.isAdmin(authService.getUser().getId())) return "redirect:/tournaments";
 
         if (bindingResult.hasErrors()) {
+            model.addAttribute("tournament", Tournament.builder().game("none").format(Format.TOURNAMENT).date(LocalDateTime.now()).playerLimit(2).build());
+            model.addAttribute("options", Format.values());
             return "redirect:/tournaments/add";
         }
 
         tournament.setStatus(TournamentStatus.NOT_STARTED);
+        Tournament savedTournament = tournamentService.create(tournament);
 
-        return "/tournaments/addTournament";
+
+        return "redirect:/tournaments/" + savedTournament.getId();
     }
 
     @PostMapping("/tournaments/update")

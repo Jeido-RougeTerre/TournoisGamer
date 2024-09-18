@@ -13,6 +13,8 @@
 
 <div class="container">
     <h1>Tournament Details</h1>
+    <a href="@{/tournaments/update">Update</a>
+    <a href="@{/">Delete</a>
     <hr>
     <div class="col justify-content-center" th:if="${tournament != null}">
         <p>Name : <span th:text="${tournament.getName()}"></span></p>
@@ -31,7 +33,7 @@
 <!--    <a th:href="@{/delete(tournamentId=${tournament.getId()})}" class="btn btn-danger">Delete</a>-->
 <!--    <a th:href="@{/update(tournamentId=${tournament.getId()})}" class="btn btn-info">Update</a>-->
 </div>
-<div><a href="/templates/tournaments/listTournaments">Go back to list</a></div>
+<div><a th:href="@{/tournaments}">Go back to list</a></div>
 
 <!-- FOOTER -->
 <span th:replace="~{home :: footer}"></span>

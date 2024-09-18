@@ -5,11 +5,13 @@ import com.jeido.tournoisgamer.utils.TournamentStatus;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -32,13 +34,11 @@ public class Tournament {
     // --- VARIABLES ---
     @NotBlank(message = "This field can't be empty !")
     private String name;
-    @NotBlank(message = "This field can't be empty !")
+    @NotNull(message = "This field can't be empty !")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private LocalDateTime date;
     @NotBlank(message = "This field can't be empty !")
     private String game;
-    @NotBlank(message = "This field can't be empty !")
-    @Min(2)
-    @Max(100)
     private int playerLimit;
     @NotBlank(message = "This field can't be empty !")
     private String rules;
