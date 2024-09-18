@@ -48,20 +48,30 @@ public class AuthController {
     public String inscriptionForm(@Valid @ModelAttribute("user") User user,
                                   BindingResult bindingResult,
                                   @RequestParam("image") MultipartFile image, Model model) throws IOException {
-//        System.out.println("IN");
-//        if (bindingResult.hasErrors()) {
-//            model.addAttribute("mode", "registration");
-//            System.out.println("ERROR");
-//            return "/login/form";
-//        } else {
-//        }
+
+
 
         Path destination = Paths.get(location).resolve(image.getOriginalFilename()).toAbsolutePath();
         user.setImgPath(image.getOriginalFilename());
-        InputStream inputStream = image.getInputStream();
-        Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+        try {
+            InputStream inputStream = image.getInputStream();
+            Files.copy(inputStream, destination, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException e) {
+            System.out.println("ERROR IMG REGISTER");
+            model.addAttribute("error", "Image must be 10 MB and 1000px x 1000px Max!");
+            model.addAttribute("mode", "registration");
+            return "/login/form";
+        }
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("mode", "registration");
+            System.out.println("ERROR: " + bindingResult.getAllErrors());
+            return "/login/form";
+        }
         authService.login(user, user.getPassword());
         userService.save(user);
+
 
         return "redirect:/";
     }
@@ -83,7 +93,6 @@ public class AuthController {
         if (connected) {
             return "redirect:/";
         }
-        model.addAttribute("mode", "login");
         return "redirect:/login";
     }
 

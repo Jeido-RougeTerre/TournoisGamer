@@ -2,16 +2,13 @@ package com.jeido.tournoisgamer.entity;
 
 import com.jeido.tournoisgamer.utils.Role;
 import jakarta.persistence.*;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.util.List;
 import java.util.UUID;
@@ -31,15 +28,14 @@ public class User {
 
     // --- VARIABLES ---
     @NotBlank(message = "This field can't be empty !")
-    @Size(min=3, max=15)
+    @Size(min=3, max=15, message = "Name should be between 3 and 15 characters long !")
     private String name;
     @NotBlank(message = "This field can't be empty !")
-    @Size(min=8)
+    @Size(min=8, message = "Password should be at least 8 characters long")
     private String password;
     @Column(name = "image")
-    @NotBlank(message = "This field can't be empty !")
     private String imgPath;
-    @Email
+    @Email(message = "Email invalid !")
     private String email;
 
     // --- LISTS ---
@@ -72,9 +68,6 @@ public class User {
         return 0;
     }
 
-    public Object getUsername() {
-        return null;
-    }
 
 }
 

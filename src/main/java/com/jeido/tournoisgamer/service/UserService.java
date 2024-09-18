@@ -1,7 +1,9 @@
 package com.jeido.tournoisgamer.service;
 
 
+import com.jeido.tournoisgamer.entity.Tournament;
 import com.jeido.tournoisgamer.entity.User;
+import com.jeido.tournoisgamer.repository.TournamentRepository;
 import com.jeido.tournoisgamer.repository.UserRepository;
 import com.jeido.tournoisgamer.utils.Role;
 import org.springframework.stereotype.Service;
@@ -14,9 +16,11 @@ import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final TournamentRepository tournamentRepository;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, TournamentRepository tournamentRepository) {
         this.userRepository = userRepository;
+        this.tournamentRepository = tournamentRepository;
     }
 
     public User save(User user) {
@@ -63,6 +67,7 @@ public class UserService {
         return userRepository.existsByName(nameOrEmail) || userRepository.existsByEmail(nameOrEmail);
     }
 
+    //TODO refactor to User
     public void setAdminRole(UUID id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
@@ -71,6 +76,7 @@ public class UserService {
         }
     }
 
+    //TODO refactor to User
     public void setPlayerRole(UUID id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
@@ -79,8 +85,21 @@ public class UserService {
         }
     }
 
+    //TODO refactor to User
     public boolean isAdmin(UUID id) {
         User user = findById(id);
         return (user.getRole() != null && user.getRole() == Role.ADMIN);
+    }
+
+    public boolean isSubscribedTo(User user, Tournament tournament) {
+        System.out.println("SERVICE USER : isSubscribedTo");
+        User chkUser = findById(user.getId());
+        if (chkUser == null) return false;
+
+        Tournament chkTournament = tournamentRepository.findById(tournament.getId()).orElse(null);
+
+        if (chkTournament == null) return false;
+
+        return chkUser.getSubscribedTournament().contains(chkTournament);
     }
 }

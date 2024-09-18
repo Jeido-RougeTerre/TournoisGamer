@@ -2,7 +2,6 @@ package com.jeido.tournoisgamer.service;
 
 import com.jeido.tournoisgamer.entity.User;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -11,11 +10,11 @@ import java.util.UUID;
 public class AuthService {
     private final UserService userService;
 
-    @Autowired
-    private HttpSession httpSession;
+    private final HttpSession httpSession;
 
-    public AuthService(UserService userService) {
+    public AuthService(UserService userService, HttpSession httpSession) {
         this.userService = userService;
+        this.httpSession = httpSession;
     }
 
     public boolean login(User user, String password){
