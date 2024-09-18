@@ -24,14 +24,28 @@
         <p>Rules : <span th:text="${tournament.getRules()}"></span></p>
         <p>Format : <span th:text="${tournament.getFormat()}"></span></p>
         <p>Status : <span th:text="${tournament.getStatus()}"></span></p>
+        <p></p>
+        <p>Subscribed Players : </p>
+        <p th:if="${tournament.getPlayers().isEmpty()}">No Player Subscribed Yet</p>
+        <div th:unless="${tournament.getPlayers().isEmpty()}" style="display: flex;flex-direction: row;">
+            <div th:each="p : ${tournament.getPlayers()}" class="card" style="width: 10rem;margin: 2px">
+                <div class="card-body">
+                    <div style="display: flex;justify-content: center;"><img
+                            th:src="@{/image/avatar/{filename}(filename=${p.imgPath})}"
+                            th:alt="'Avatar of ' + ${p.name}" style="width: 9rem;padding: 5px;"></div>
+                    <h5 style="text-align: center" th:text="${p.name}"></h5>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div>
-    <a th:href="@{/addPlayer}">Add player</a>
+        <a th:unless="${isSubscribe}" th:href="@{/tournaments/subscription/{id}(id=${tournament.getId()})}">Subscribe
+            tournament</a>
+        <a th:if="${isSubscribe}" th:href="@{/tournaments/unsubscription/{id}(id=${tournament.getId()})}">Unsubscribe
+            tournament</a>
     </div>
 
-<!--    <hr>-->
-<!--    <a th:href="@{/delete(tournamentId=${tournament.getId()})}" class="btn btn-danger">Delete</a>-->
-<!--    <a th:href="@{/update(tournamentId=${tournament.getId()})}" class="btn btn-info">Update</a>-->
 </div>
 <div><a th:href="@{/tournaments}">Go back to list</a></div>
 

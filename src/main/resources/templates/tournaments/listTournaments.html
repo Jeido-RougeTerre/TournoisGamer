@@ -15,7 +15,7 @@
     <table class="tournaments" th:unless="${tournaments.isEmpty()}">
         <thead>
         <tr>
-            <th scope="col">#</th>
+            <th th:if="${isAdmin}" scope="col">#</th>
             <th scope="col">Name</th>
             <th scope="col">Date</th>
             <th scope="col">Game</th>
@@ -25,7 +25,7 @@
         </thead>
         <tbody >
         <tr th:each="t : ${tournaments}">
-            <td th:text="${t.getId()}"></td>
+            <td th:if="${isAdmin}" th:text="${t.getId()}"></td>
             <td th:text="${t.getName()}"></td>
             <td th:text="${t.getDate()}"></td>
             <td th:text="${t.getGame()}"></td>

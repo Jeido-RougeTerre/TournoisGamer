@@ -41,9 +41,13 @@ public class TournamentController {
 
             User user = authService.getUser();
             if (user != null && user.getRole() == Role.ADMIN) {
+                System.out.println("TATA");
                 model.addAttribute("isAdmin", true);
+            } else {
+                System.out.println("MICHEL");
             }
         } else {
+            System.out.println("TOTO");
             model.addAttribute("isAdmin", false);
         }
 
@@ -73,9 +77,13 @@ public class TournamentController {
             model.addAttribute("isAdmin", false);
         }
 
-        Tournament tournament = tournamentService.findTournamentById(id).orElse(null);
-        //TODO error(custom) not found
+        Tournament tournament = tournamentService.findTournamentById(id);
+        if (tournament == null) {
+            //TODO error(custom) not found
+            return "redirect:/tournaments";
+        }
         model.addAttribute("tournament", tournament);
+        model.addAttribute("isSubscribe", userService.isSubscribedTo(authService.getUser(), tournament));
         return "tournaments/detailTournaments";
     }
 
@@ -114,7 +122,7 @@ public class TournamentController {
             return "redirect:/login";
         }
         if(userService.isAdmin(authService.getUser().getId())) {
-            Tournament tournamentToUpdate = tournamentService.findTournamentById(id).orElse(null);
+            Tournament tournamentToUpdate = tournamentService.findTournamentById(id);
             if(tournamentToUpdate == null) {
                 //TODO error(Custom) not found
                 return "redirect:/tournaments";
@@ -143,64 +151,11 @@ public class TournamentController {
         return "redirect:/tournaments/" + updatedTour.getId();
     }
 
-    @PostMapping("/tournaments/subscription/{id}")
-    public String subscribeToTournament(@PathVariable("id") UUID id, Model model) {
-        if (authService.isLogged()) {
-            User user = authService.getUser();
-
-            if (user == null) {
-                model.addAttribute("erreur", "Vous n'êtes pas connecté");
-                return "redirect:/login";
-            }
-
-
-            Tournament tournament = tournamentService.findTournamentById(id).orElse(null);
-
-            if (tournament == null) {
-                model.addAttribute("erreur", "Tournoi introuvable");
-                return "redirect:/tournaments";
-            }
-
-            if (tournament.getInCompetitionPlayers().size() >= tournament.getPlayerLimit()) {
-                model.addAttribute("erreur", "Tournoi Plein");
-                return "redirect:/tournaments/" + id;
-            }
-
-            switch (tournament.getStatus()) {
-                case CANCELLED:
-                    model.addAttribute("erreur", "Tournoi annulé");
-                    break;
-                case COMPLETED:
-                    model.addAttribute("erreur", "Tournoi Terminé");
-                    break;
-                case STARTED:
-                    model.addAttribute("erreur", "Tournoi Déjà commencé");
-                    break;
-                case NOT_STARTED:
-                    tournament.getInCompetitionPlayers().add(user);
-                    tournament.getPlayers().add(user);
-                    tournamentService.update(tournament);
-                    user.getSubscribedTournament().add(tournament);
-                    userService.update(user);
-                    break;
-                default:
-                    model.addAttribute("erreur", "incorrect Status");
-                    break;
-            }
-
-            return "redirect:/tournaments/" + id;
-
-        } else {
-            model.addAttribute("erreur", "Vous n'êtes pas connecté");
-            return "redirect:/user/registration-form";
-        }
-    }
-
     @RequestMapping("/tournaments/delete/{id}")
     public String delete(@PathVariable("id") UUID id) {
         if (authService.isLogged()) {
             if (authService.getUser().getRole() == Role.ADMIN) {
-                Tournament tournamentToDelete = tournamentService.findTournamentById(id).orElse(null);
+                Tournament tournamentToDelete = tournamentService.findTournamentById(id);
                 if (tournamentToDelete == null) {
                     //TODO error(Custom) notfound
                     return "redirect:/tournaments";
@@ -211,6 +166,117 @@ public class TournamentController {
                 return "redirect:/tournaments/" + id;
             }
         }
-        return "redirect:/tournaments/{id}";
+        return "redirect:/login";
+    }
+
+    @GetMapping("/tournaments/subscription/{id}")
+    public String subscribeTournament(@PathVariable("id")UUID id, Model model) {
+        if (authService.isLogged()) {
+            User user = authService.getUser();
+
+            if (user == null) {
+                model.addAttribute("error", "You're not logged in !");
+                return "redirect:/login";
+            }
+
+
+            Tournament tournament = tournamentService.findTournamentById(id);
+
+            if (tournament == null) {
+                model.addAttribute("error", "There is no tournament yet !");
+                return "redirect:/tournaments";
+            }
+
+            if (tournament.getInCompetitionPlayers().size() >= tournament.getPlayerLimit()) {
+                model.addAttribute("error", "Tournament is full.");
+                return "redirect:/tournaments/" + id;
+            }
+
+            switch (tournament.getStatus()) {
+                case CANCELLED:
+                    System.out.println("Tournament canceled.");
+                    model.addAttribute("error", "Tournament canceled.");
+                    break;
+                case COMPLETED:
+                    System.out.println("Tournament finished.");
+                    model.addAttribute("error", "Tournament finished.");
+                    break;
+                case STARTED:
+                    System.out.println("Tournament already began.");
+                    model.addAttribute("error", "Tournament already began.");
+                    break;
+                case NOT_STARTED:
+                    System.out.println("OK");
+                    tournament.getInCompetitionPlayers().add(user);
+                    tournament.getPlayers().add(user);
+                    tournamentService.update(tournament);
+                    user.getSubscribedTournament().add(tournament);
+                    userService.update(user);
+                    break;
+                default:
+                    System.out.println("???");
+                    model.addAttribute("error", "incorrect Status");
+                    break;
+            }
+
+            return "redirect:/tournaments/" + id;
+
+        } else {
+            model.addAttribute("error", "You're not logged in !");
+            return "redirect:/login";
+        }
+    }
+
+    @GetMapping("/tournaments/unsubscription/{id}")
+    public String unsubscribeTournament(@PathVariable("id")UUID id, Model model) {
+        if (authService.isLogged()) {
+            User user = authService.getUser();
+
+            if (user == null) {
+                model.addAttribute("error", "You're not logged in !");
+                return "redirect:/login";
+            }
+
+
+            Tournament tournament = tournamentService.findTournamentById(id);
+
+            if (tournament == null) {
+                model.addAttribute("error", "There is no tournament yet !");
+                return "redirect:/tournaments";
+            }
+
+//            if (tournament.getInCompetitionPlayers().size() >= tournament.getPlayerLimit()) {
+//                model.addAttribute("error", "Tournament is full.");
+//                return "redirect:/tournaments/" + id;
+//            }
+
+            switch (tournament.getStatus()) {
+                case CANCELLED:
+                    model.addAttribute("error", "Tournament canceled.");
+                    break;
+                case COMPLETED:
+                    model.addAttribute("error", "Tournament finished.");
+                    break;
+                case STARTED:
+                    model.addAttribute("error", "Tournament already began.");
+                    break;
+                case NOT_STARTED:
+                    tournament.getInCompetitionPlayers().remove(user);
+                    tournament.getPlayers().remove(user);
+                    tournamentService.update(tournament);
+                    user.getSubscribedTournament().remove(tournament);
+                    userService.update(user);
+                    break;
+                default:
+                    model.addAttribute("error", "incorrect Status");
+                    break;
+            }
+
+            return "redirect:/tournaments/" + id;
+
+        } else {
+            model.addAttribute("error", "You're not logged in !");
+            return "redirect:/login";
+        }
     }
 }
