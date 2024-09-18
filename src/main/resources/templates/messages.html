@@ -7,16 +7,21 @@
 </head>
 <body>
 <nav th:replace="~{home :: navbar}"></nav>
-<div>
-  <p th:if="${messages.isEmpty()}">No message Yet</p>
+<div style="display: flex;flex-direction: column;text-align: center">
+  <p th:if="${messages == null || messages.isEmpty()}">No message Yet</p>
   <div th:each="m : ${messages}">
     <div>
       <h1>
         <a th:href="@{/user/{id}(id=${m.getUser().getId()})}">
-          <img th:src="@{/image/avatar/{filename}(filename=${m.getUser().imgPath})}" th:alt="'Avatar of ' + ${m.getUser().name}">
+          <img style="width: 20%;height: auto" th:src="@{/image/avatar/{filename}(filename=${m.getUser().imgPath})}" th:alt="'Avatar of ' + ${m.getUser().name}">
           <span th:text="${m.getUser().name}"></span>
           <span th:text="${m.getDateTime()}"></span>
         </a>
+        <span>
+          <a class="btn btn-outline-danger" th:href="@{/messages/delete/{id}(id=${m.getId()})}" th:if="${isAdmin || m.user.getId() == user.getId()}" ><i class="bi bi-trash-fill"></i></a>
+          <a class="btn btn-outline-secondary" th:href="@{/messages/delete/{id}(id=${m.getId()})}" th:if="${m.user.getId() == user.getId()}"><i class="bi bi-pencil"></i></a>
+        </span>
+
       </h1>
     </div>
     <div>
@@ -24,11 +29,11 @@
     </div>
   </div>
 </div>
-<div>
-  <form action="messages" method="post" th:object="${message}">
+<div style="text-align:center">
+  <form action="/messages" method="post">
     <label for="message" hidden="hidden"></label>
-    <input id="message" th:field="*{content}" placeholder="Send a Message...">
-    <button class="btn btn-outline-primary"></button>
+    <input id="message" type="text" name="message" placeholder="Send a Message..." style="width: 50%;height: 100px">
+    <button class="btn btn-outline-primary"><i class="bi bi-send"></i></button>
   </form>
 </div>
 <footer th:replace="~{home :: footer}"></footer>

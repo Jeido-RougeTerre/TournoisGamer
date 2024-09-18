@@ -5,7 +5,6 @@ import com.jeido.tournoisgamer.entity.User;
 import com.jeido.tournoisgamer.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,5 +32,9 @@ public class MessageService {
 
     public List<Message> findBySender(User sender) {
         return messageRepository.findByUser(sender);
+    }
+
+    public void delete(Message message) {
+        messageRepository.delete(message);
     }
 }
