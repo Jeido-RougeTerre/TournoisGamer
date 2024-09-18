@@ -42,9 +42,16 @@
         <div class="mb-3">
             <label for="format">Format :</label>
             <select class="form-control" id="format" th:field="*{format}">
-                <option th:each="f : ${options}" th:text="${f.toString()}" th:value="${f.toString()}"></option>
+                <option th:each="f : ${formats}" th:text="${f.toString()}" th:value="${f.toString()}"></option>
             </select>
             <span th:if="${#fields.hasErrors('format')}" th:errors="*{format}"></span>
+        </div>
+        <div class="mb-3">
+            <label for="status">Status :</label>
+            <select class="form-control" id="status" th:field="*{status}">
+                <option th:each="s : ${status}" th:text="${s.toString()}" th:value="${s.toString()}"></option>
+            </select>
+            <span th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></span>
         </div>
 
         <button class="btn btn-primary" th:text="${tournament.getId() != null ? 'Update tournament' : 'Add tournament'}"></button>

@@ -57,4 +57,8 @@ public class TournamentService {
     public Tournament update(Tournament tournament) {
         return tournamentRepository.save(tournament);
     }
+
+    public void delete(Tournament tournament) {
+        tournamentRepository.delete(tournament);
+    }
 }

@@ -4,7 +4,6 @@ public enum TournamentStatus {
     STARTED,
     COMPLETED,
     NOT_STARTED,
-    TBA,
     CANCELLED,
 
 }
