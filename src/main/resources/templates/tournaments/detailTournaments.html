@@ -23,6 +23,10 @@
         <p>Format : <span th:text="${tournament.getFormat()}"></span></p>
         <p>Status : <span th:text="${tournament.getStatus()}"></span></p>
     </div>
+    <div>
+    <a th:href="@{/addPlayer}">Add player</a>
+    </div>
+
 <!--    <hr>-->
 <!--    <a th:href="@{/delete(tournamentId=${tournament.getId()})}" class="btn btn-danger">Delete</a>-->
 <!--    <a th:href="@{/update(tournamentId=${tournament.getId()})}" class="btn btn-info">Update</a>-->

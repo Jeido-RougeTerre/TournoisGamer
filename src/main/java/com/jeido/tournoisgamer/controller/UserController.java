@@ -3,6 +3,7 @@ package com.jeido.tournoisgamer.controller;
 import com.jeido.tournoisgamer.entity.User;
 import com.jeido.tournoisgamer.service.AuthService;
 import com.jeido.tournoisgamer.service.UserService;
+import com.jeido.tournoisgamer.utils.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,10 @@ public class UserController {
     public UserController(UserService userService, AuthService authService) {
         this.userService = userService;
         this.authService = authService;
+        //DEBUG PLZ DELETE
+        if (!userService.exist("Admin")) {
+            userService.save(User.builder().name("Admin").password("adminadmin").email("admin@admin.com").imgPath("th.webp").role(Role.ADMIN).build());
+        }
     }
 
     @RequestMapping("/user")

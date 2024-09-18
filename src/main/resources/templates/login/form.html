@@ -20,15 +20,22 @@
             </div>
             <div class="mb-3">
                 <label for="password" hidden="hidden"></label>
-                <input class="form-control" id="password" type="text" placeholder="password" th:field="*{password}">
+                <input class="form-control" id="password" type="password" placeholder="password" th:field="*{password}">
             </div>
             <div th:if="${mode.equals('registration')}" class="mb-3">
                 <label for="email" hidden="hidden"></label>
-                <input class="form-control" id="email" type="text" placeholder="email" th:field="*{email}">
+                <input class="form-control" id="email" type="email" placeholder="email" th:field="*{email}">
             </div>
             <div th:if="${mode.equals('registration')}" class="mb-3">
                 <label for="image" hidden="hidden"></label>
                 <input class="form-control" id="image" name="image" type="file">
+            </div>
+            <div th:if="${mode.equals('registration')}" class="mb-3">
+                <label for="role">Role :</label>
+                <select class="form-control" id="role" th:field="*{role}">
+                    <option th:each="r : ${options}" th:text="${r.toString()}" th:value="${r.toString()}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></span>
             </div>
             <div class="mb-3">
                 <button class="btn btn-primary" th:text="${mode.equals('login')} ? 'Log In' : 'Register'"></button>

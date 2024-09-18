@@ -75,5 +75,6 @@ public class User {
     public Object getUsername() {
         return null;
     }
+
 }
 

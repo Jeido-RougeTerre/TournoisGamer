@@ -7,6 +7,7 @@ import com.jeido.tournoisgamer.service.TournamentService;
 import com.jeido.tournoisgamer.service.UserService;
 import com.jeido.tournoisgamer.utils.Format;
 import com.jeido.tournoisgamer.utils.Role;
+import com.jeido.tournoisgamer.utils.TournamentStatus;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,16 @@ public class TournamentController {
 
     @GetMapping("/tournaments")
     public String getAllTournaments(@RequestParam(value = "date", required = false) LocalDateTime date, @RequestParam(value = "name", required = false) String name, Model model) {
+        if (authService.isLogged()) {
+
+            User user = authService.getUser();
+            if (user != null && user.getRole() == Role.ADMIN) {
+                model.addAttribute("isAdmin", true);
+            }
+        } else {
+            model.addAttribute("isAdmin", false);
+        }
+
         List<Tournament> tournaments;
         if (date != null && name != null) {
             tournaments = tournamentService.findTournamentsByDateAndByName(date, name);
@@ -60,20 +71,49 @@ public class TournamentController {
 
     @GetMapping("/tournaments/add")
     public String addTournament(Model model) {
-        model.addAttribute("tournament", Tournament.builder().game("none").format(Format.TOURNAMENT).date(LocalDateTime.now()).playerLimit(0).build());
+        model.addAttribute("tournament", Tournament.builder().game("none").format(Format.TOURNAMENT).date(LocalDateTime.now()).playerLimit(2).build());
         model.addAttribute("options", Format.values());
         return "tournaments/addTournament";
     }
 
     @PostMapping("/tournaments/add")
     public String addPostTournament(@Valid @ModelAttribute("tournament") Tournament tournament, BindingResult bindingResult, Model model) {
-        if(!isAdmin()) return "redirect:/tournaments";
+        if(!authService.isLogged()) return "redirect:/login";
+        if(!userService.isAdmin(authService.getUser().getId())) return "redirect:/tournaments";
+
+        if (bindingResult.hasErrors()) {
+            return "redirect:/tournaments/add";
+        }
+
+        tournament.setStatus(TournamentStatus.NOT_STARTED);
+
         return "/tournaments/addTournament";
     }
 
     @PostMapping("/tournaments/update")
-    public String updateTournament(@Valid @ModelAttribute ("tournament")Tournament tournament, BindingResult bindingResult, Model model) {
-        if(!isAdmin()) return "redirect:/tournaments";
+    public String updateTournament(@Valid @ModelAttribute("tournament")Tournament tournament, BindingResult bindingResult, Model model) {
+        if(!authService.isLogged()) return "redirect:/login";
+        if(!userService.isAdmin(authService.getUser().getId())) return "redirect:/tournaments";
+
+        if (bindingResult.hasErrors()) {
+            return "redirect:/tournaments/update";
+        }
+
+        switch (tournament.getStatus()) {
+            case NOT_STARTED -> {}
+            case STARTED -> {
+                tournament.init();
+            }
+            case TBA -> {
+                tournament.setDate(null);
+            }
+            case COMPLETED -> {
+                tournament.calcWinner();
+            }
+            case CANCELLED -> {
+
+            }
+        }
 
         return "/tournaments/addTournament";
     }
@@ -132,17 +172,5 @@ public class TournamentController {
             model.addAttribute("erreur", "Vous n'êtes pas connecté");
             return "redirect:/user/registration-form";
         }
-    }
-
-
-    private boolean isAdmin() {
-
-        User user = authService.getUser();
-        if (user == null) {
-            return false;
-        }
-
-        return  user.getRole() == Role.ADMIN;
-
     }
 }

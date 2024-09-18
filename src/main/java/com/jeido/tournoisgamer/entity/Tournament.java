@@ -56,4 +56,27 @@ public class Tournament {
 
     @ManyToMany(mappedBy = "subscribedTournament")
     private List<User> players;
+
+    //TODO
+    public void init() {
+        System.out.println(this.name + " has Started");
+    }
+
+    //TODO
+    public void end() {
+        System.out.println(this.name + " has Ended");
+    }
+
+    //TODO
+    public void matchStart(List<User> usersInMatch) {
+        System.out.println(this.name + " Match started");
+    }
+
+    //TODO
+    public Result matchEnd(List<User> usersInMatch) {
+        return null;
+    }
+
+    public void calcWinner() {
+    }
 }

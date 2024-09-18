@@ -4,8 +4,9 @@ import com.jeido.tournoisgamer.entity.Message;
 import com.jeido.tournoisgamer.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface MessageRepository extends JpaRepository<Message, UUID> {
-    Message findByUser(User user);
+    List<Message> findByUser(User user);
 }

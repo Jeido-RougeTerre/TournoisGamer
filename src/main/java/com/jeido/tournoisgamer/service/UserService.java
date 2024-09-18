@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -61,4 +63,24 @@ public class UserService {
         return userRepository.existsByName(nameOrEmail) || userRepository.existsByEmail(nameOrEmail);
     }
 
+    public void setAdminRole(UUID id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setRole(Role.ADMIN);
+            userRepository.save(user);
+        }
+    }
+
+    public void setPlayerRole(UUID id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setRole(Role.PLAYER);
+            userRepository.save(user);
+        }
+    }
+
+    public boolean isAdmin(UUID id) {
+        User user = findById(id);
+        return (user.getRole() != null && user.getRole() == Role.ADMIN);
+    }
 }

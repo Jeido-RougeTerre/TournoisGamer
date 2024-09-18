@@ -2,11 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title th:if="${user != null}" th:text="${user.name} + ' Profile'"></title>
+    <title th:if="${user != null}" th:text="${user.name} + ' Profil'"></title>
   <link th:replace="~{home :: bootstrapImport}">
 </head>
 <body>
 <span th:replace="~{home :: navbar}"></span>
+
 <main>
   <div class="avatar">
     <img th:src="@{/image/avatar/{filename}(filename=${user.imgPath == null} ? 'no-icon.png' : ${user.getImgPath()})}" th:alt="'Avatar of ' + ${user.name}"><h1 th:text="${user.name}"></h1><p><span th:text="${user.getWin()}"></span>/<span th:text="${user.getDefeat()}"></span>(<span th:text="${user.getRatio()}"></span>)</p>
@@ -21,6 +22,7 @@
     </div>
   </div>
 </main>
+
 <span th:replace="~{home :: footer}"></span>
 </body>
 </html>

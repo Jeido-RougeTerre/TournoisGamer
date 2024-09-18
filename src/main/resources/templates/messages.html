@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+  <title>Messages</title>
+  <link th:replace="~{home :: bootstrapImport}">
+</head>
+<body>
+<nav th:replace="~{home :: navbar}"></nav>
+<div>
+  <p th:if="${messages.isEmpty()}">No message Yet</p>
+  <div th:each="m : ${messages}">
+    <div>
+      <h1>
+        <a th:href="@{/user/{id}(id=${m.getUser().getId()})}">
+          <img th:src="@{/image/avatar/{filename}(filename=${m.getUser().imgPath})}" th:alt="'Avatar of ' + ${m.getUser().name}">
+          <span th:text="${m.getUser().name}"></span>
+          <span th:text="${m.getDateTime()}"></span>
+        </a>
+      </h1>
+    </div>
+    <div>
+      <p th:text="${m.content}"></p>
+    </div>
+  </div>
+</div>
+<div>
+  <form action="messages" method="post" th:object="${message}">
+    <label for="message" hidden="hidden"></label>
+    <input id="message" th:field="*{content}" placeholder="Send a Message...">
+    <button class="btn btn-outline-primary"></button>
+  </form>
+</div>
+<footer th:replace="~{home :: footer}"></footer>
+</body>
+</html>
